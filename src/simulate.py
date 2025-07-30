@@ -2,21 +2,33 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 
-# Choose my tickers
-tickers = ['AMZN', 'SBUX', 'NKE', 'AAPL', 'TSLA',
-            'GOOGL', 'META', 'WMT', 'ADDYY']
 
-# Gather data
-data = yf.download(tickers, start = '2023-01-01', end = '2025-06-01')['Close']
+def simulate_portfolio_losses(mu, sigma, weights, T=10, N=10000, seed=42):
+    """
+    Simulate the losses on the portfolio over a T day period using Monte Carlo
 
-# Find log returns
-log_returns = np.log(data / data.shift(1)).dropna()
+    Inputs:
+    mu(array): Expected daily return vector
+    sigma(array): Covariance matrix
+    weights(array): Portfolio weights
+    T(int): Time period in days, such as 10 day VaR
+    N(int): Number of Monte Carlo simulations
 
-# Expected returns and covariance matrix
-mu = log_returns.mean().values
-sigma = log_returns.cov().values
+    Returns:
+    losses(array): Simulated losses
+    """
 
-# Convert to csv for later use
-log_returns.to_csv('data/historical_returns.csv')
-np.save('data/mu.npy', mu)
-np.save('data/sigma.npy', sigma)
+    np.random.seed(seed)
+    mu_scaled = T * mu
+    sigma_scaled = T * sigma
+
+    # Simulate N paths of our T day returns
+    simulated_returns = np.random.multivariate_normal(mu_scaled, sigma_scaled, size=N)
+
+    # Portfolio returns is dot product with weights
+    portfolio_returns = np.dot(simulated_returns, weights)
+
+    # Portfolio loss is negative returns
+    losses = -portfolio_returns
+
+    return losses
