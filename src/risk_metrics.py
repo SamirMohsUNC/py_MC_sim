@@ -29,5 +29,5 @@ def compute_cvar(losses, alpha=0.95):
 
     var = compute_var(losses, alpha)
     tail_losses = losses[losses >= var]
-    
+
     return tail_losses.mean()
