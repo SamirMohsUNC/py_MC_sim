@@ -23,9 +23,11 @@ def simulate_portfolio_losses(mu, sigma, weights, T=10, N=10000, seed=42):
     simulated_returns = np.random.multivariate_normal(mu_scaled, sigma_scaled, size=N)
     
     # Portfolio return = dot product with weights
-    portfolio_returns = simulated_returns @ weights
+    portfolio_returns = np.dot(simulated_returns, weights)
     
     # Portfolio loss = negative return
     losses = -portfolio_returns
 
     return losses
+
+

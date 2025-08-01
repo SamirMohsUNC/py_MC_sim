@@ -12,7 +12,7 @@ def scale_covariance(sigma, scale_factor=2.0):
     Returns:
         ndarray: Scaled covariance matrix
     """
-    
+
     return sigma * scale_factor
 
 
@@ -51,7 +51,7 @@ def simulate_t_dist_losses(mu, sigma, weights, T=10, N=10000, df=5, seed=42):
     t_samples = mu_scaled + Z / np.sqrt(chi_samples)[:, None]
 
     # Portfolio returns and losses
-    portfolio_returns = t_samples @ weights
+    portfolio_returns = np.dot(t_samples, weights)
     losses = -portfolio_returns
 
     return losses
