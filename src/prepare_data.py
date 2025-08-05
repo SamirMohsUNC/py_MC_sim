@@ -7,7 +7,7 @@ import os
 tickers = ['AMZN', 'SBUX', 'NKE', 'AAPL', 'TSLA', 'GOOGL', 'META', 'WMT', 'ADDYY']
 
 # Download price data
-data = yf.download(tickers, start='2023-01-01', end='2025-06-01')['Close']
+data = yf.download(tickers, start='2023-01-01', end='2025-08-04')['Close']
 data.dropna(inplace=True)
 
 # Compute log returns
