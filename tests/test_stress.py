@@ -40,3 +40,4 @@ def test_extreme_t_tail_risk():
     losses = simulate_t_dist_losses(mu, sigma, weights, T=10, N=100000, df=2, seed=7)
 
     assert np.percentile(losses, 99.9) > 0.5  # extreme tail values should exist
+    
