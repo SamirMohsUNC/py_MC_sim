@@ -19,7 +19,7 @@ def get_user_input():
     assert len(tickers) == len(investments), "Number of tickers must match numberof investments."
 
     print("\nChoose historical data window:")
-    print("1 - Last 6 months\n2 - Last 1 year\n3 Last 2 years")
+    print("1 - Last 6 months\n2 - Last 1 year\n3 - Last 2 years")
     window_choice = input("Enter 1, 2, or 3: ").strip()
     window_days = {'1': 182, '2': 365, '3': 730}[window_choice]
 

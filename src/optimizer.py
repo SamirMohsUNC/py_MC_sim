@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.optimize import minimize
-from simulate import simulate_portfolio_losses
-from risk_metrics import compute_cvar
+from src.simulate import simulate_portfolio_losses
+from src.risk_metrics import compute_cvar
 
 def minimize_cvar(mu, sigma, T, N=100000):
     d = len(mu)
