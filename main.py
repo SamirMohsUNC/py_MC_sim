@@ -8,7 +8,7 @@ from src.risk_metrics import compute_var, compute_cvar
 from src.optimizer import minimize_cvar
 
 
-# Create questions for user to answer
+# Create helper questions for user to answer
 def get_user_input():
     tickers = input("Enter stock tickers separated by commas (e.g. AAPL,MSFT,GOOGL): ").strip().upper().split(',')
     tickers = [t.strip() for t in tickers]
@@ -53,7 +53,8 @@ def display_portfolio(tickers, weights, total_value, title="Portfolio Allocation
         print(f"{t}: {w:.2%} -> ${w * total_value:.2f}")
 
 
-# Now to run user logic
+
+# Now to run user logic in main
 def main():
     print("Interactive Monte Carlo Portfolio Risk Simulation With Optimization")
 
@@ -75,7 +76,15 @@ def main():
     print(f"\n Portfolio VaR 95% = {var_95:.4%} ({var_95 * total_value:.2f} USD)")
     print(f"\n Portfolio CVaR 95% = {cvar_95:.4%} ({cvar_95 * total_value:.2f} USD)")
 
-    choice = input("\nWould you like to optimize your portfolio to minimize CVaR? (y/n): ").strip().lower()
+
+
+# Optional stress testing
+    do_stress = input("Would you like to run a stress test? (y or n):")
+
+
+
+#Optional portfolio optimization
+    choice = input("\nWould you like to optimize your portfolio to minimize CVaR? (y or n): ").strip().lower()
     if choice == 'y':
         print("\nOptimizing portfolio...")
         opt_weights = minimize_cvar(mu, sigma, T=horizon)
@@ -91,6 +100,8 @@ def main():
         print("\nNo optimization performed.")
 
 
+
+# Call all functions to iteract with user
 if __name__ == "__main__":
     main()
 
