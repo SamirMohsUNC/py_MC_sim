@@ -1,57 +1,28 @@
 import numpy as np
 from scipy.stats import t
+from src.simulate import simulate_portfolio_losses, simulate_t_dist_losses
 
 def scale_covariance(sigma, scale_factor=2.0):
     """
-    Stress test by scaling the covariance matrix.
-
-    Inputs:
-        sigma (ndarray): Original covariance matrix (d x d)
-        scale_factor (float): Multiplier for volatility (e.g., 2.0 = double volatility)
-
-    Returns:
-        ndarray: Scaled covariance matrix
+    Scale the covariance matrix to simulate a total economic shock
     """
-
     return sigma * scale_factor
 
 
-def simulate_t_dist_losses(mu, sigma, weights, T=10, N=10000, df=5, seed=42):
+def shock_certain_assets(mu, shcoked_tickers, shock_pct, tickers):
     """
-    Simulate portfolio losses under a multivariate t-distribution.
-
-    Inputs:
-        mu (ndarray): Mean return vector (d,)
-        sigma (ndarray): Covariance matrix (d, d)
-        weights (ndarray): Portfolio weights (d,)
-        T (int): Time horizon in days
-        N (int): Number of simulations
-        df (int): Degrees of freedom (lower = fatter tails)
-        seed (int): Random seed
-
-    Returns:
-        ndarray: Simulated losses (N,)
+    Give a shock to specfic tickers in the mean return vector
     """
+    shocked_mu = mu.copy()
+    for ticker in shcoked_tickers:
+        if ticker in tickers:
+            idx = tickers.index(tickers)
+            shocked_mu[idx] += shock_pct
+    return shocked_mu
 
-    np.random.seed(seed)
-    d = len(mu)
-    
-    # Scale parameters
-    mu_scaled = T * mu
-    sigma_scaled = T * sigma
 
-    # Sample from multivariate t-distribution:
-    # Step 1: Standard normal
-    Z = np.random.multivariate_normal(np.zeros(d), sigma_scaled, size=N)
-    
-    # Step 2: Chi-squared samples
-    chi_samples = np.random.chisquare(df, size=N) / df
+def run_stress_test(mu, sigma, weights, tickers, T=10, N=100000, method='economic', shock_tickers=None, shock_pct=)
 
-    # Step 3: Create t-distributed samples
-    t_samples = mu_scaled + Z / np.sqrt(chi_samples)[:, None]
 
-    # Portfolio returns and losses
-    portfolio_returns = np.dot(t_samples, weights)
-    losses = -portfolio_returns
 
-    return losses
+
