@@ -14,17 +14,17 @@ def minimize_cvar(mu, sigma, T, N=100000):
     constraints = [{'type': 'eq', 'fun':lambda w: np.sum(w) - 1}]
 
     # Set dynamic constraints based on portfolio size
-    if d<= 5:
+    if d <= 5:
         max_weight = 0.35
-    elif d==6:
+    elif d == 6:
         max_weight = 0.32
-    elif d==7:
+    elif d == 7:
         max_weight = 0.29
-    elif d==8:
+    elif d == 8:
         max_weight = 0.26
-    elif d==9:
+    elif d == 9:
         max_weight = 0.23
-    elif d>=10:
+    elif d >= 10:
         max_weight = 0.20
 
 
