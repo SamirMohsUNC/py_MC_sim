@@ -1,6 +1,6 @@
 # src/stress_test.py
 import numpy as np
-from simulate import simulate_portfolio_losses, simulate_t_dist_losses
+from src.simulate import simulate_portfolio_losses, simulate_t_dist_losses
 
 def scale_covariance(sigma, scale_factor=2.0):
     """

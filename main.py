@@ -141,7 +141,7 @@ def main():
     print(f"   95% CI for CVaR: {reg_ci_results['cvar_ci'][0]:.4%} to {reg_ci_results['cvar_ci'][1]:.4%}")
 
 
-#Optional portfolio optimization
+# Optional portfolio optimization
     opt_weights = None
     choice = input("\nWould you like to optimize your portfolio to minimize CVaR? (y or n): ").strip().lower()
     if choice == 'y':
