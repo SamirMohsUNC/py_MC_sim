@@ -165,7 +165,7 @@ def main():
     run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label='Initial')
 
     if opt_weights is not None:
-        run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label='Optimized')
+        run_stress_prompt(mu, sigma, opt_weights, tickers, horizon, total_value, label='Optimized')
     
 
 
