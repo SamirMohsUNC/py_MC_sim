@@ -24,14 +24,14 @@ def shock_certain_assets(mu, shocked_tickers, shock_pct, tickers):
     shocked_mu = mu.copy()
     for ticker in shocked_tickers:
         if ticker in tickers:
-            idx = tickers.index(ticker)      # <-- fix indexing
+            idx = tickers.index(ticker)      
             shocked_mu[idx] += shock_pct
     return shocked_mu
 
 def run_stress_test(
     mu, sigma, weights, tickers,
     T=10, N=100000,
-    method="economic",                 # "economic" | "stock"
+    method="economic",                 
     shock_tickers=None, shock_pct=-0.10,
     scale_factor=2.0,
     dist="normal", df=5
