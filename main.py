@@ -4,7 +4,7 @@ import yfinance as yf
 from datetime import datetime, timedelta
 
 from src.simulate import simulate_portfolio_losses
-from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_interval
+from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_intervals
 from src.optimizer import minimize_cvar
 from src.stress_test import run_stress_test
 
@@ -93,7 +93,7 @@ def run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label="
             return
         
         try:
-            shock_pct = float(input("Enter stock to those tickers as decimal (e.g. -0.08 for -8%): ").strip())
+            shock_pct = float(input("Enter shock to those tickers as decimal (e.g. -0.08 for -8%): ").strip())
         except ValueError:
             print("Invalid shock size. Skipping stress test.")
             return
@@ -106,7 +106,7 @@ def run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label="
     
     stressed_var = compute_var(stressed_losses, 0.95)
     stressed_cvar = compute_cvar(stressed_losses, 0.95)
-    stressed_ci_results = bootstrap_confidence_interval(stressed_losses, alpha=0.95, n_boot=2000)
+    stressed_ci_results = bootstrap_confidence_intervals(stressed_losses, alpha=0.95, n_boot=2000)
 
     print(f"VaR 95% = {stressed_var:.4%} USD {stressed_var * total_value:.2f}")
     print(f"   95% CI for VaR: {stressed_ci_results['var_ci'][0]:.4%} to {stressed_ci_results['var_ci'][1]:.4%}")
@@ -131,7 +131,7 @@ def main():
 
     var_95 = compute_var(losses, 0.95)
     cvar_95 = compute_cvar(losses, 0.95)
-    reg_ci_results = bootstrap_confidence_interval(losses, alpha=0.95, n_boot=2000)
+    reg_ci_results = bootstrap_confidence_intervals(losses, alpha=0.95, n_boot=2000)
 
     display_portfolio(tickers, weights, total_value, "Initial Portfolio Allocation)")
 
@@ -151,7 +151,7 @@ def main():
         opt_losses = simulate_portfolio_losses(mu, sigma, opt_weights, T=horizon, N=100_000)
         opt_var = compute_var(opt_losses, 0.95)
         opt_cvar = compute_cvar(opt_losses, 0.95)
-        opt_ci_results = bootstrap_confidence_interval(opt_losses, alpha=0.95, n_boot=2000)
+        opt_ci_results = bootstrap_confidence_intervals(opt_losses, alpha=0.95, n_boot=2000)
 
         display_portfolio(tickers, opt_weights, total_value, "Optimized Portfolio Allocation")
         print(f"VaR 95% = {opt_var:.4%} USD {opt_var * total_value:.2f}")
