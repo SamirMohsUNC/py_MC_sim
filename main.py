@@ -4,7 +4,7 @@ import yfinance as yf
 from datetime import datetime, timedelta
 
 from src.simulate import simulate_portfolio_losses
-from src.risk_metrics import compute_var, compute_cvar
+from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_interval
 from src.optimizer import minimize_cvar
 from src.stress_test import run_stress_test
 
@@ -106,8 +106,12 @@ def run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label="
     
     stressed_var = compute_var(stressed_losses, 0.95)
     stressed_cvar = compute_cvar(stressed_losses, 0.95)
-    print(f"\n{label} portfolio - Stressed VaR 95% = {stressed_var:.4%} ({stressed_var * total_value:.2f} USD)")
-    print(f"\n{label} portfolio - Stressed CVaR 95% = {stressed_cvar:.4%} ({stressed_cvar * total_value:.2f} USD)")
+    stressed_ci_results = bootstrap_confidence_interval(stressed_losses, alpha=0.95, n_boot=2000)
+
+    print(f"VaR 95% = {stressed_var:.4%} USD {stressed_var * total_value:.2f}")
+    print(f"   95% CI for VaR: {stressed_ci_results['var_ci'][0]:.4%} to {stressed_ci_results['var_ci'][1]:.4%}")
+    print(f"CVaR 95% = {stressed_cvar:.4%} USD {stressed_cvar * total_value:.2f}")
+    print(f"   95% CI for CVaR: {stressed_ci_results['cvar_ci'][0]:.4%} to {stressed_ci_results['cvar_ci'][1]:.4%}")
 
 
 
@@ -127,17 +131,14 @@ def main():
 
     var_95 = compute_var(losses, 0.95)
     cvar_95 = compute_cvar(losses, 0.95)
+    reg_ci_results = bootstrap_confidence_interval(losses, alpha=0.95, n_boot=2000)
 
     display_portfolio(tickers, weights, total_value, "Initial Portfolio Allocation)")
 
-    print(f"\n Portfolio VaR 95% = {var_95:.4%} ({var_95 * total_value:.2f} USD)")
-    print(f"\n Portfolio CVaR 95% = {cvar_95:.4%} ({cvar_95 * total_value:.2f} USD)")
-
-
-
-# Optional stress testing
-    do_stress = input("Would you like to run a stress test? (y or n):")
-
+    print(f"VaR 95% = {var_95:.4%} USD {var_95 * total_value:.2f}")
+    print(f"   95% CI for VaR: {reg_ci_results['var_ci'][0]:.4%} to {reg_ci_results['var_ci'][1]:.4%}")
+    print(f"CVaR 95% = {cvar_95:.4%} USD {cvar_95 * total_value:.2f}")
+    print(f"   95% CI for CVaR: {reg_ci_results['cvar_ci'][0]:.4%} to {reg_ci_results['cvar_ci'][1]:.4%}")
 
 
 #Optional portfolio optimization
@@ -150,10 +151,13 @@ def main():
         opt_losses = simulate_portfolio_losses(mu, sigma, opt_weights, T=horizon, N=100_000)
         opt_var = compute_var(opt_losses, 0.95)
         opt_cvar = compute_cvar(opt_losses, 0.95)
+        opt_ci_results = bootstrap_confidence_interval(opt_losses, alpha=0.95, n_boot=2000)
 
         display_portfolio(tickers, opt_weights, total_value, "Optimized Portfolio Allocation")
-        print(f"\nOptimized VaR 95% ={opt_var:.4%} ({opt_var * total_value:.2f} USD)")
-        print(f"\nOptimized CVaR 95% ={opt_cvar:.4%} ({opt_cvar * total_value:.2f} USD)")
+        print(f"VaR 95% = {opt_var:.4%} USD {opt_var * total_value:.2f}")
+        print(f"   95% CI for VaR: {opt_ci_results['var_ci'][0]:.4%} to {opt_ci_results['var_ci'][1]:.4%}")
+        print(f"CVaR 95% = {opt_cvar:.4%} USD {opt_cvar * total_value:.2f}")
+        print(f"   95% CI for CVaR: {opt_ci_results['cvar_ci'][0]:.4%} to {opt_ci_results['cvar_ci'][1]:.4%}")
     else:
         print("\nNo optimization performed.")
 
@@ -163,7 +167,6 @@ def main():
     if opt_weights is not None:
         run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label='Optimized')
     
-
 
 
 ### Call all functions to iteract with user
