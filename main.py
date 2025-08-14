@@ -7,6 +7,7 @@ from src.simulate import simulate_portfolio_losses
 from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_intervals
 from src.optimizer import minimize_cvar
 from src.stress_test import run_stress_test
+from src.backtest import backtest_var_cvar
 
 
 ### Create helper questions for user to answer
