@@ -60,6 +60,7 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
         log_r = -2 * (ll(p, p) - ll(p01, p11))
         return float(log_r), float(1 - chisquare.cdf(log_r, 1))
     
+
     rng = np.random.default_rng(seed)
     weights = np.asarray(weights, float)
     returns_df = returns_df.copy()
@@ -69,5 +70,61 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
     var_series = []
     es_series = []
     realized = []
+
+
+    for t in range(window, len(returns_df) - horizon + 1):
+        train = returns_df.iloc[t - window : t]
+        future = returns_df.iloc[t : t + horizon]
+
+        mu = train.mean().values
+        sigma = train.cov().values
+
+        local_seed = int(rng.integers(0, 1e9))
+        if dist == 'normal':
+            losses = simulate_portfolio_losses(mu, sigma, weights, T=horizon, N=N, seed=local_seed)
+        else:
+            losses = simulate_t_dist_losses(mu, sigma, weights, T=horizon, N=N, df=df, seed=local_seed)
+
+        v = compute_var(losses, alpha)
+        e = compute_cvar(losses, alpha)
+
+        # Realized horizon loss (sum log returns over horizon, then weight)
+        asset_logret = future.sum(axis=0).values
+        rlz = float(-(np.dot(asset_logret, weights)))
+
+        var_series.append(v)
+        es_series.append(e)
+        realized.append(rlz)
+        dates.append(returns_df.index[t + horizon - 1])
+
+    var_series = np.array(var_series)
+    es_series = np.array(es_series)
+    realized = np.array(realized)
+    exceed = (realized >= var_series).astpye(int)
+
+    hit_rate = float(exceed.mean()) if exceed.size else np.nan
+    kupiec_lr, kupiec_p = kupiec_pof(exceed, alpha)
+    christ_lr, christ_p = christoffersen_ind(exceed)
+
+    tail_mask = realized >= var_series
+    avg_real_tail = float(realized[tail_mask].mean()) if tail_mask.any() else np.nan
+    avg_es_tail = float(es_series[tail_mask].mean()) if tail_mask.any() else np.nan
+    es_gap = float(avg_real_tail - avg_es_tail) if tail_mask.any() else np.nan
+
+    return {"dates": np.array(dates),
+        "realized_losses": realized,
+        "var": var_series,
+        "es": es_series,
+        "exceedances": exceed,
+        "hit_rate": hit_rate,
+        "kupiec_LR": kupiec_lr, "kupiec_p": kupiec_p,
+        "christ_LR": christ_lr, "christ_p": christ_p,
+        "avg_realized_tail": avg_real_tail,
+        "avg_forecast_es": avg_es_tail,
+        "es_gap": es_gap,
+        "alpha": alpha, "window": window, "horizon": horizon,
+        "N": N, "dist": dist, "df": df,
+        "tickers": list(returns_df.columns)}
+
     
     
