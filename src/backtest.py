@@ -60,4 +60,14 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
         log_r = -2 * (ll(p, p) - ll(p01, p11))
         return float(log_r), float(1 - chisquare.cdf(log_r, 1))
     
+    rng = np.random.default_rng(seed)
+    weights = np.asarray(weights, float)
+    returns_df = returns_df.copy()
+    returns_df = returns_df.dropna().astype(float)
+
+    dates = []
+    var_series = []
+    es_series = []
+    realized = []
+    
     
