@@ -100,7 +100,7 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
     var_series = np.array(var_series)
     es_series = np.array(es_series)
     realized = np.array(realized)
-    exceed = (realized >= var_series).astpye(int)
+    exceed = (realized >= var_series).astype(int)
 
     hit_rate = float(exceed.mean()) if exceed.size else np.nan
     kupiec_lr, kupiec_p = kupiec_pof(exceed, alpha)
