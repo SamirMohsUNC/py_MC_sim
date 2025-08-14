@@ -141,6 +141,20 @@ def main():
     print(f"CVaR 95% = {cvar_95:.4%} USD {cvar_95 * total_value:.2f}")
     print(f"   95% CI for CVaR: {reg_ci_results['cvar_ci'][0]:.4%} to {reg_ci_results['cvar_ci'][1]:.4%}")
 
+    # Backtest on initial portfolio
+    do_backtest_i = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n): ").strip().lower()
+    if do_backtest_i == 'y':
+        returns_df = np.log(data / data.shift(1)).dropna()
+        # Keep window reasonable
+        window_bt_i = min(252, max(60, len(returns_df) // 2))
+        bt_i = backtest_var_cvar(returns_df, weights, alpha=0.95, window=window_bt_i, horizon=1, N=100_000, dist='normal', df=5)
+        print(f"\nBacktest (alpha={bt_i['alpha']}, horizon={bt_i['horizon']}d, window={bt_i['window']}):")
+        print(f" - VaR hit rate: {bt_i['hit_rate']:.3f} (expected {1-bt_i['alpha']:.3f})")
+        print(f" - Kupiec  POF: LR={bt_i['kupiec_LR']:.3f}, p={bt_i['kupiec_p']:.3f}")
+        print(f" - Christoffersen IND: LR={bt_i['christ_LR']:.3f}, p={bt_i['christ_p']:.3f}")
+        if bt_i['avg_realized_tail'] == bt_i['avg_realized_tail']:
+            print(f" - Tail realized vs ES: {bt_i['avg_realized_tail']:.4%} vs {bt_i['avg_forecast_es']:.4%} (gap {bt_i['es_gap']:.4%})")
+
 
 # Optional portfolio optimization
     opt_weights = None
@@ -161,6 +175,20 @@ def main():
         print(f"   95% CI for CVaR: {opt_ci_results['cvar_ci'][0]:.4%} to {opt_ci_results['cvar_ci'][1]:.4%}")
     else:
         print("\nNo optimization performed.")
+
+    # Backteset on optimized portfolio
+    do_backtest_o = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n)").strip().lower()
+    if do_backtest_o == 'y':
+        returns_df = np.log(data / data.shift(1)).dropna()
+        # Keep window reasonable
+        window_bt_o = min(252, max(60, len(returns_df) // 2))
+        bt_o = backtest_var_cvar(returns_df, opt_weights, alpha=0.95, window=window_bt_o, horizon=1, N=100_000, dist='normal', df=5)
+        print(f"\nBacktest (alpha={bt_o['alpha']}, horizon={bt_o['horizon']}d, window={bt_o['window']}):")
+        print(f" - VaR hit rate: {bt_o['hit_rate']:.3f} (expected {1-bt_o['alpha']:.3f})")
+        print(f" - Kupiec  POF: LR={bt_o['kupiec_LR']:.3f}, p={bt_o['kupiec_p']:.3f}")
+        print(f" - Christoffersen IND: LR={bt_o['christ_LR']:.3f}, p={bt_o['christ_p']:.3f}")
+        if bt_i['avg_realized_tail'] == bt_o['avg_realized_tail']:
+            print(f" - Tail realized vs ES: {bt_o['avg_realized_tail']:.4%} vs {bt_o['avg_forecast_es']:.4%} (gap {bt_o['es_gap']:.4%})")
 
     # Now to run the stressor after optimization
     run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label='Initial')
