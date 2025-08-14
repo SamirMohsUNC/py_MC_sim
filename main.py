@@ -144,6 +144,7 @@ def main():
     # Backtest on initial portfolio
     do_backtest_i = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n): ").strip().lower()
     if do_backtest_i == 'y':
+        print("\nRunning backtest...")
         returns_df = np.log(data / data.shift(1)).dropna()
         # Keep window reasonable
         window_bt_i = min(252, max(60, len(returns_df) // 2))
@@ -154,6 +155,8 @@ def main():
         print(f" - Christoffersen IND: LR={bt_i['christ_LR']:.3f}, p={bt_i['christ_p']:.3f}")
         if bt_i['avg_realized_tail'] == bt_i['avg_realized_tail']:
             print(f" - Tail realized vs ES: {bt_i['avg_realized_tail']:.4%} vs {bt_i['avg_forecast_es']:.4%} (gap {bt_i['es_gap']:.4%})")
+    else:
+        print("\nNo backtest desired")
 
 
 # Optional portfolio optimization
@@ -179,6 +182,7 @@ def main():
     # Backteset on optimized portfolio
     do_backtest_o = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n)").strip().lower()
     if do_backtest_o == 'y':
+        print("\nRunning backtest...")
         returns_df = np.log(data / data.shift(1)).dropna()
         # Keep window reasonable
         window_bt_o = min(252, max(60, len(returns_df) // 2))
@@ -189,6 +193,8 @@ def main():
         print(f" - Christoffersen IND: LR={bt_o['christ_LR']:.3f}, p={bt_o['christ_p']:.3f}")
         if bt_i['avg_realized_tail'] == bt_o['avg_realized_tail']:
             print(f" - Tail realized vs ES: {bt_o['avg_realized_tail']:.4%} vs {bt_o['avg_forecast_es']:.4%} (gap {bt_o['es_gap']:.4%})")
+    else:
+        print("\nNo backtest desired")
 
     # Now to run the stressor after optimization
     run_stress_prompt(mu, sigma, weights, tickers, horizon, total_value, label='Initial')
