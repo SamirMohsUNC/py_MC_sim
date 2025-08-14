@@ -3,7 +3,7 @@ import pandas as pd
 from src.simulate import simulate_portfolio_losses, simulate_t_dist_losses
 from src.risk_metrics import compute_var, compute_cvar
 from math import log
-from scipy.stats import chisquare
+from scipy.stats import chi2
 
 
 def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=100_100, dist='normal', df=5, seed=123):
@@ -29,7 +29,7 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
         log_1 = (n-x) * log(max(1-p_hat, eps)) + x * log(max(p_hat, eps))
         log_0 = (n-x) * log(max(1-p_0, eps)) + x * log(max(p_0, eps))
         log_r = -2 * (log_0-log_1)
-        return float(log_r), float(1 - chisquare.cdf(log_r, 1))
+        return float(log_r), float(1 - chi2.cdf(log_r, 1))
     
 
     def christoffersen_ind(exceedances):
@@ -58,7 +58,7 @@ def backtest_var_cvar(returns_df, weights, alpha=0.95, window=252, horizon=1, N=
                     n11 * np.log(max(p11, eps)))
         
         log_r = -2 * (ll(p, p) - ll(p01, p11))
-        return float(log_r), float(1 - chisquare.cdf(log_r, 1))
+        return float(log_r), float(1 - chi2.cdf(log_r, 1))
     
 
     rng = np.random.default_rng(seed)
