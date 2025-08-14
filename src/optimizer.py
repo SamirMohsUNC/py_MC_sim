@@ -3,7 +3,7 @@ from scipy.optimize import minimize
 from src.simulate import simulate_portfolio_losses
 from src.risk_metrics import compute_cvar
 
-def minimize_cvar(mu, sigma, T, N=100000):
+def minimize_cvar(mu, sigma, T, N=100_000):
     d = len(mu)
 
     def objective(w):
