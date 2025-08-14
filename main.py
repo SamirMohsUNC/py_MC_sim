@@ -154,7 +154,7 @@ def main():
         print(f" - Kupiec  POF: LR={bt_i['kupiec_LR']:.3f}, p={bt_i['kupiec_p']:.3f}")
         print(f" - Christoffersen IND: LR={bt_i['christ_LR']:.3f}, p={bt_i['christ_p']:.3f}")
         if bt_i['avg_realized_tail'] == bt_i['avg_realized_tail']:
-            print(f" - Tail realized vs ES: {bt_i['avg_realized_tail']:.4%} vs {bt_i['avg_forecast_es']:.4%} (gap {bt_i['es_gap']:.4%})")
+            print(f" - Tail realized vs CVaR: {bt_i['avg_realized_tail']:.4%} vs {bt_i['avg_forecast_cvar']:.4%} (gap {bt_i['es_gap']:.4%})")
     else:
         print("\nNo backtest desired")
 
@@ -192,7 +192,7 @@ def main():
         print(f" - Kupiec  POF: LR={bt_o['kupiec_LR']:.3f}, p={bt_o['kupiec_p']:.3f}")
         print(f" - Christoffersen IND: LR={bt_o['christ_LR']:.3f}, p={bt_o['christ_p']:.3f}")
         if bt_i['avg_realized_tail'] == bt_o['avg_realized_tail']:
-            print(f" - Tail realized vs ES: {bt_o['avg_realized_tail']:.4%} vs {bt_o['avg_forecast_es']:.4%} (gap {bt_o['es_gap']:.4%})")
+            print(f" - Tail realized vs CVaR: {bt_o['avg_realized_tail']:.4%} vs {bt_o['avg_forecast_cvar']:.4%} (gap {bt_o['es_gap']:.4%})")
     else:
         print("\nNo backtest desired")
 
