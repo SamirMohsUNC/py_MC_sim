@@ -15,17 +15,27 @@ def minimize_cvar(mu, sigma, T, N=100_000):
 
     # Set dynamic constraints based on portfolio size
     if d <= 5:
-        max_weight = 0.35
-    elif d == 6:
-        max_weight = 0.32
-    elif d == 7:
-        max_weight = 0.29
-    elif d == 8:
-        max_weight = 0.26
-    elif d == 9:
-        max_weight = 0.23
-    elif d >= 10:
         max_weight = 0.20
+    elif d == 6:
+        max_weight = 0.19
+    elif d == 7:
+        max_weight = 0.18
+    elif d == 8:
+        max_weight = 0.17
+    elif d == 9:
+        max_weight = 0.16
+    elif d == 10:
+        max_weight = 0.15
+    elif d == 11: 
+        max_weight = 0.14
+    elif d == 12:
+        max_weight = 0.13
+    elif d == 13:
+        max_weight = 0.12
+    elif d == 14:
+        max_weight = 0.11
+    elif d >= 15:
+        max_weight = 0.10
 
 
     bounds = [(0.0, max_weight)] * d
