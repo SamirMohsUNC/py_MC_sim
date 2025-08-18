@@ -49,7 +49,7 @@ def rolling_optimize_and_dashboard(returns_df, baseline_weights, alpha=0.95, win
     if len(returns_df) < window + horizon:
         raise ValueError("Not enough data: increase history or reduce window/horizon")
     
-    for t in range(len(window), len(returns_df)-horizon+1):
+    for t in range(window, len(returns_df)-horizon+1):
         train = returns_df.iloc[t - window: t]
         future = returns_df.iloc[t: t + horizon]
         

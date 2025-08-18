@@ -8,6 +8,7 @@ from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_int
 from src.optimizer import minimize_cvar
 from src.stress_test import run_stress_test
 from src.backtest import backtest_var_cvar
+from src.rolling import rolling_optimize_and_dashboard
 
 
 ### Create helper questions for user to answer
@@ -180,7 +181,7 @@ def main():
         print("\nNo optimization performed.")
 
     # Backteset on optimized portfolio
-    do_backtest_o = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n)").strip().lower()
+    do_backtest_o = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your optimized portfolio? (y or n): ").strip().lower()
     if do_backtest_o == 'y':
         print("\nRunning backtest...")
         returns_df = np.log(data / data.shift(1)).dropna()
@@ -201,6 +202,36 @@ def main():
 
     if opt_weights is not None:
         run_stress_prompt(mu, sigma, opt_weights, tickers, horizon, total_value, label='Optimized')
+
+    do_roll = input("\nRun rolling adaptive optimization & risk dashboard? (y or n): ").strip().lower()
+    if do_roll == 'y':
+
+        returns_df = np.log(data / data.shift(1)).dropna()
+
+        window_bt = min(252, max(60, len(returns_df) // 2))
+
+        baseline_for_roll = opt_weights
+
+        summary, dashboard_path = rolling_optimize_and_dashboard(
+            returns_df=returns_df,
+            baseline_weights=baseline_for_roll,
+            alpha=0.95,
+            horizon=1,
+            N=100_000,
+            dist='normal',
+            df=5,
+            save_dir='reports',
+            seed=123
+        )
+
+        print("\nRolling optimization summary: ")
+        for k, v in summary.items():
+            if isinstance(v, float):
+                print(f" - {k}: {v:.6f}")
+            else:
+                print(f" - {k}: {v}")
+
+        print(f"\nDashboard saved to: {dashboard_path}")
     
 
 
