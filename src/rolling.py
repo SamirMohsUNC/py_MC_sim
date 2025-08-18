@@ -46,4 +46,8 @@ def rolling_optimize_and_dashboard(returns_df, baseline_weights, alpha=0.95, win
     # simple baseline weight path. keep baseline constant
     prev_w = None
 
-    if len(returns_df) < window + horizon
+    if len(returns_df) < window + horizon:
+        raise ValueError("Not enough data: increase history or reduce window/horizon")
+    
+    for t in range(len(window), len(returns_df)-horizon+1):
+        
