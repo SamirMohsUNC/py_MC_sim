@@ -50,4 +50,17 @@ def rolling_optimize_and_dashboard(returns_df, baseline_weights, alpha=0.95, win
         raise ValueError("Not enough data: increase history or reduce window/horizon")
     
     for t in range(len(window), len(returns_df)-horizon+1):
+        train = returns_df.iloc[t - window: t]
+        returns = returns_df.iloc[t: t + horizon]
+        
+        mu = train.mean().values
+        sigma = train.cov().values
+
+        #optimize weights for this step
+        weights_opt = minimize_cvar(mu, sigma, T=horizon, N=N)
+
+        #forecast VaR/CVaR for optimized weights
+        local_seed = int(rng.integers(0, 1_000_000_000))
+        if dist == 'normal': 
+            losses = simulate_portfolio_losses(mu, sigma, weights_opt, T=horizon, N=N, seed=local_seed)
         
