@@ -216,6 +216,7 @@ def main():
             returns_df=returns_df,
             baseline_weights=baseline_for_roll,
             alpha=0.95,
+            window=window_bt,
             horizon=1,
             N=100_000,
             dist='normal',
