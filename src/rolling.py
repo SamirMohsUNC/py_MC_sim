@@ -161,7 +161,7 @@ def rolling_optimize_and_dashboard(returns_df, baseline_weights, alpha=0.95, win
     # Formatting
     fig.tight_layout()
     fig.savefig(out_path, dpi=120)
-    fig.close(fig)
+    plt.close(fig)
 
     return summary, out_path
 
