@@ -53,7 +53,7 @@ def fetch_data(tickers, window_days):
     end_date = datetime.today()
     start_date = end_date - timedelta(days=window_days)
     print(f"\nFetching data for {tickers}...")
-    data = yf.download(tickers, start=start_date, end=end_date, auto_adjust=False)
+    data = yf.download(tickers, start=start_date, end=end_date)['Close']
     # keep only rows with all tickers to avoid NaNs in covariance
     data = data.dropna(how='any')
     if data.shape[0] < 60:
