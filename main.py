@@ -205,7 +205,8 @@ def main():
 
     do_roll = input("\nRun rolling adaptive optimization & risk dashboard? (y or n): ").strip().lower()
     if do_roll == 'y':
-
+        returns_df = np.log(data / data.shift(1)).dropna()
+        
         window_bt = min(252, max(60, len(returns_df) // 2))
 
         baseline_for_roll = opt_weights
