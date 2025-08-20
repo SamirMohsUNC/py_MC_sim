@@ -30,7 +30,7 @@ def get_user_input():
     print("2 - Last 5 year")
     print("3 - Last 7 years")
     window_choice = input("Enter 1, 2, or 3: ").strip()
-    window_days_map = {'1': 3 * 365, '2': 5 * 365, '3': 7 * 365}
+    window_days_map = {'1': 782, '2': 1304, '3': 1825}
     window_days = window_days_map.get(window_choice)
     if window_days is None:
         raise ValueError("Invalid window selection.")
@@ -82,7 +82,7 @@ def display_portfolio(tickers, weights, total_value, title="Portfolio Allocation
 # Main flow
 # -----------------------------
 def main():
-    print("📊 Monte Carlo Portfolio Risk Simulation")
+    print(" Monte Carlo Portfolio Risk Simulation")
     tickers, investments, window_days, horizon = get_user_input()
 
     data = fetch_data(tickers, window_days)
@@ -101,12 +101,12 @@ def main():
         try:
             base_wdays = int(input("Baseline EWMA window (10–45 trading days): ").strip())
         except Exception:
-            base_wdays = 30
+            base_wdays = 17
         base_wdays = max(10, min(45, base_wdays))
         try:
-            base_lam = float(input("Baseline EWMA decay λ (0.925–0.985 typical; Enter for 0.95): ").strip() or "0.95")
+            base_lam = float(input("Baseline EWMA decay λ (0.925–0.985 typical; Enter for 0.94): ").strip() or "0.94")
         except Exception:
-            base_lam = 0.95
+            base_lam = 0.94
         base_lam = max(0.90, min(0.995, base_lam))
 
         recent = returns_df.iloc[-base_wdays:]
@@ -184,13 +184,13 @@ def main():
             try:
                 window_days = int(input("Dynamic window (10–45 trading days): ").strip())
             except Exception:
-                window_days = 30
+                window_days = 17
             window_days = max(10, min(45, window_days))
 
             try:
-                lam = float(input("EWMA decay λ (0.925–0.985 typical; Enter for 0.95): ").strip() or "0.95")
+                lam = float(input("EWMA decay λ (0.925–0.985 typical; Enter for 0.94): ").strip() or "0.94")
             except Exception:
-                lam = 0.95
+                lam = 0.94
             lam = max(0.90, min(0.995, lam))
 
             print(f"\nOptimizing portfolio (Dynamic EWMA, window={window_days}d, λ={lam:.3f})...")
