@@ -5,7 +5,7 @@ from src.risk_metrics import compute_cvar
 
 
 # ----------------------------
-# Caps (your original scheme)
+# Caps per asset invested. Assuming a minimum of 5 assets. 
 # ----------------------------
 def _max_weight_by_count(d: int) -> float:
     if d <= 5:
