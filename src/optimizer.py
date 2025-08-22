@@ -4,9 +4,8 @@ from src.simulate import simulate_portfolio_losses
 from src.risk_metrics import compute_cvar
 
 
-# ----------------------------
-# Caps per asset invested. Assuming a minimum of 5 assets. 
-# ----------------------------
+
+# Caps per asset invested. Needs a minimum of 5 assets 
 def _max_weight_by_count(d: int) -> float:
     if d <= 5:
         return 0.20
@@ -32,9 +31,7 @@ def _max_weight_by_count(d: int) -> float:
         return 0.10
 
 
-# ----------------------------
 # Core static optimizer (your original behavior)
-# ----------------------------
 def minimize_cvar(mu, sigma, T, N=100_000, alpha=0.95):
     """
     CVaR-minimizing weights using provided mu, sigma (static).
@@ -57,13 +54,11 @@ def minimize_cvar(mu, sigma, T, N=100_000, alpha=0.95):
     return res.x
 
 
-# ----------------------------
 # EWMA stats (for dynamic optimization)
-# ----------------------------
 def _ewma_mean_cov(returns_df, lam=0.97):
     """
-    Exponentially weighted mean & covariance (RiskMetrics-style) on a DataFrame of
-    DAILY log returns (rows=time, cols=assets). Newer rows get higher weight.
+    Exponentially weighted mean & covariance (RiskMetrics-style) on a df of
+    daily log returns (rows=time, cols=assets). Newer rows get higher weight
     """
     R = returns_df.dropna().values  # shape (T, d)
     Tn, d = R.shape
@@ -84,9 +79,7 @@ def _ewma_mean_cov(returns_df, lam=0.97):
     return mu, cov
 
 
-# ----------------------------
 # Dynamic optimizer from short recent window
-# ----------------------------
 def minimize_cvar_from_returns(
     returns_df,
     T,
@@ -116,9 +109,7 @@ def minimize_cvar_from_returns(
     return w_opt, mu, sigma
 
 
-# ----------------------------
 # One entry point to choose static vs dynamic
-# ----------------------------
 def optimize_cvar(
     mode,
     T,

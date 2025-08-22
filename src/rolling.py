@@ -16,7 +16,7 @@ def realized_horizon_loss(returns_block, weights):
 
 
 def rolling_optimize_and_dashboard(returns_df, baseline_weights, alpha=0.95, window=252, horizon=1, N=50_000,
-    dist="normal",     # "normal" | "t-dist"
+    dist="t-dist",     # "normal" | "t-dist"
     df=5, save_dir="reports", seed=123):
     """
     Rolling CVaR-minimizing optimization with risk evaluation vs a baseline.
