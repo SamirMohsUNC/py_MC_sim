@@ -1,4 +1,3 @@
-# src/stress_test.py
 import numpy as np
 from src.simulate import simulate_portfolio_losses, simulate_t_dist_losses
 
@@ -11,15 +10,6 @@ def scale_covariance(sigma, scale_factor=2.0):
 def shock_certain_assets(mu, shocked_tickers, shock_pct, tickers):
     """
     Apply a return shock to specific tickers in the mean return vector.
-
-    Args:
-        mu (ndarray): Original mean returns, shape (d,)
-        shocked_tickers (list[str]): Tickers to shock
-        shock_pct (float): Decimal shock amount (e.g., -0.10 = -10%)
-        tickers (list[str]): Full list of tickers (for index lookup)
-
-    Returns:
-        ndarray: Adjusted mean returns with shocks applied
     """
     shocked_mu = mu.copy()
     for ticker in shocked_tickers:
@@ -34,14 +24,10 @@ def run_stress_test(
     method="economic",                 
     shock_tickers=None, shock_pct=-0.10,
     scale_factor=2.0,
-    dist="normal", df=5
+    dist="t-dist", df=5
 ):
     """
     Run a modular stress test.
-
-    - method = "economic": scale entire covariance via `scale_factor`
-    - method = "stock": shock select tickers' mean returns by `shock_pct`
-
     dist: "normal" or "t-dist"
     """
     if method == "economic":
