@@ -91,7 +91,7 @@ def main():
     weights = portfolio_weights_from_amounts(investments)
     total_value = float(sum(investments))
 
-    # --- Choose how to estimate μ/Σ for baseline reporting (sample or EWMA short-window) ---
+    # Choose how to estimate μ/Σ for baseline reporting (sample or EWMA short-window) 
     print("\nHow should we estimate μ/Σ for baseline risk?")
     print("1 - Sample (equal-weighted over full lookback)")
     print("2 - EWMA (exponentially weighted, short recent window)")
@@ -126,7 +126,7 @@ def main():
         mu = returns_df.mean().values
         sigma = returns_df.cov().values
 
-    # --- Baseline simulation (normal) ---
+    # Baseline simulation (with static or dynamic)
     print(f"\nRunning Monte Carlo simulation for a {horizon}-day investment horizon...")
     losses = simulate_portfolio_losses(mu, sigma, weights, T=horizon, N=100_000)
     var_95 = compute_var(losses, 0.95)
@@ -139,7 +139,7 @@ def main():
     print(f"CVaR 95% = {cvar_95:.4%} USD {cvar_95 * total_value:.2f}")
     print(f"   95% CI for CVaR: {ci_results['cvar_ci'][0]:.4%} to {ci_results['cvar_ci'][1]:.4%}")
 
-    # --- Optional backtest (initial) ---
+    # Optional backtest (initial portfolio)
     do_bt_i = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your initial portfolio? (y or n): ").strip().lower()
     if do_bt_i == 'y':
         window_bt_i = min(252, max(60, len(returns_df) // 2))
@@ -157,7 +157,7 @@ def main():
     else:
         print("\nNo backtest desired")
 
-    # ---------- Optional portfolio optimization (static vs dynamic) ----------
+    # Optional portfolio optimization (static vs dynamic) 
     opt_weights = None
     choice = input("\nWould you like to optimize your portfolio to minimize CVaR? (y or n): ").strip().lower()
     if choice == 'y':
@@ -210,7 +210,7 @@ def main():
                 method="ewma", window_days=window_days, lam=lam
             )
 
-        # Final (precise) simulation for reporting metrics
+        # Optimize portfolio for reporting metrics in simulation
         opt_losses = simulate_portfolio_losses(mu_used, sigma_used, opt_weights, T=horizon, N=100_000)
         opt_var = compute_var(opt_losses, 0.95)
         opt_cvar = compute_cvar(opt_losses, 0.95)
@@ -224,7 +224,7 @@ def main():
     else:
         print("\nNo optimization performed.")
 
-    # --- Optional backtest (optimized) ---
+    # Optional backtest (after optimization) 
     if opt_weights is not None:
         do_bt_o = input("\nRun a rolling VaR/CVaR backtest on the lookback window for your optimized portfolio? (y or n): ").strip().lower()
         if do_bt_o == 'y':
@@ -242,7 +242,7 @@ def main():
         else:
             print("\nNo backtest desired")
 
-    # --- Optional stress testing (after optimization) ---
+    # Optional stress testing (after optimization) 
     def stress_prompt(muX, sigmaX, weightsX, label):
         ans = input(f"\nWould you like to run a stress test on the {label} portfolio? (y or n): ").strip().lower()
         if ans != 'y':
