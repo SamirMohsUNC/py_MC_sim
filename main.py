@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 from src.simulate import simulate_portfolio_losses
 from src.risk_metrics import compute_var, compute_cvar, bootstrap_confidence_intervals
-from src.optimizer import optimize_cvar, minimize_cvar_from_returns  # <-- updated import
+from src.optimizer import optimize_cvar, minimize_cvar_from_returns  
 from src.stress_test import run_stress_test
 from src.backtest import backtest_var_cvar
 from src.rolling import rolling_optimize_and_dashboard
