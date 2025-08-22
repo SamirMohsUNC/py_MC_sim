@@ -12,7 +12,7 @@ def backtest_var_cvar(
     window=252,
     horizon=1,
     N=50_000,
-    dist="normal",   # "normal" or "t-dist"
+    dist="t-dist",   # "normal" or "t-dist"
     df=5,
     seed=123,
 ):
