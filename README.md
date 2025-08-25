@@ -63,15 +63,13 @@ py_MC_sim/
 ---
 
 ## Installation
-```bash
-git clone https://github.com/your-username/py_MC_sim.git
+git clone https://github.com/SamirMohsUNC/py_MC_sim.git
 cd py_MC_sim
 pip install -r requirements.txt
 
 
 
-Requirements
-
+## Requirements
 Python 3.9+
 numpy, pandas, yfinance
 matplotlib, seaborn
@@ -79,8 +77,7 @@ scikit-learn
 scipy
 
 
-Usage
-
+## Usage
 Run the interactive program:
 python main.py
 
@@ -105,13 +102,13 @@ CVaR 95% = 3.20% (USD 320.00)
 95% CI for CVaR: 3.15% to 3.25%
 
 
-Why This Project Matters
-Shows skills in quantitative finance, risk management, and numerical optimization.
+## Why This Project Matters
+Demonstrates skills in quantitative finance, risk management, and numerical optimization.
 Bridges theory (VaR, CVaR, EWMA, statistical backtesting) with practice (real financial data, realistic caps, stress tests).
 Built to resemble a mini risk engine like those used in hedge funds or risk departments.
 
 
-References
+## References
 J.P. Morgan (1996). RiskMetrics Technical Document.
 Christoffersen, P. (1998). Evaluating interval forecasts.
 Glasserman, P. (2004). Monte Carlo Methods in Financial Engineering.
