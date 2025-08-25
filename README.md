@@ -6,7 +6,7 @@ This project integrates **Monte Carlo simulation**, **Value-at-Risk (VaR)**, **C
 
 ---
 
-## 🚀 Features
+## Features
 - **Monte Carlo Simulation**  
   - Simulates portfolio losses across different horizons (1, 2, 4, 7, 10 days).  
   - Supports both **Normal** and **t-distribution** sampling.
@@ -40,50 +40,7 @@ This project integrates **Monte Carlo simulation**, **Value-at-Risk (VaR)**, **C
 
 ---
 
-## 📂 Project Structure
-# Monte Carlo Portfolio Risk Simulation
-
-A Python-based framework for **portfolio risk analysis and optimization**.  
-This project integrates **Monte Carlo simulation**, **Value-at-Risk (VaR)**, **Conditional Value-at-Risk (CVaR)**,  
-**portfolio optimization**, **stress testing**, and **backtesting** into a modular, user-friendly tool.
-
----
-
-## 🚀 Features
-- **Monte Carlo Simulation**  
-  - Simulates portfolio losses across different horizons (1, 2, 4, 7, 10 days).  
-  - Supports both **Normal** and **t-distribution** sampling.
-
-- **Risk Metrics**
-  - Value-at-Risk (VaR)  
-  - Conditional Value-at-Risk (CVaR)  
-  - Bootstrap confidence intervals for VaR & CVaR  
-
-- **Portfolio Optimization**
-  - Minimize CVaR under dynamic weight constraints.  
-  - Choose between:
-    - **Static optimization** (sample mean/covariance)  
-    - **Dynamic optimization** using **EWMA (Exponentially Weighted Moving Average)**  
-      with short rolling windows (10–45 trading days).  
-  - Enforces realistic single-asset caps based on portfolio size.  
-
-- **Stress Testing**
-  - Apply **economic shocks** by scaling volatility.  
-  - Apply **stock-specific shocks** (e.g., -10% on chosen tickers).  
-
-- **Backtesting**
-  - Kupiec POF test for hit rate accuracy.  
-  - Christoffersen test for independence of exceptions.  
-  - Rolling VaR & CVaR validation.  
-
-- **Rolling Adaptive Optimization**
-  - Run rolling re-optimization with short horizons.  
-  - Compare performance against a static baseline.  
-  - Generates a dashboard visualization of risk & return.
-
----
-
-## 📂 Project Structure
+## Project Structure
 py_MC_sim/
 │
 ├── main.py # Interactive entry point
@@ -105,27 +62,22 @@ py_MC_sim/
 
 ---
 
-## 🛠️ Installation
+## Installation
 ```bash
 git clone https://github.com/your-username/py_MC_sim.git
 cd py_MC_sim
 pip install -r requirements.txt
 
 
----
-
-## 🛠️ Installation
-```bash
-git clone https://github.com/your-username/py_MC_sim.git
-cd py_MC_sim
-pip install -r requirements.txt
 
 Requirements
+
 Python 3.9+
 numpy, pandas, yfinance
 matplotlib, seaborn
 scikit-learn
 scipy
+
 
 Usage
 
