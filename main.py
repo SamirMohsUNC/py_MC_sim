@@ -38,8 +38,8 @@ def get_user_input():
     print("\nChoose investment horizon for risk calculation")
     print("1 - 1 day")
     print("2 - 2 days")
-    print("3 - 4 days")
-    print("4 - 7 days")
+    print("3 - 3 days")
+    print("4 - 6 days")
     print("5 - 10 days")
     horizon_map = {'1': 1, '2': 2, '3': 3, '4': 6, '5': 10}
     horizon_days = horizon_map.get(input("Enter 1-5: ").strip())
@@ -104,10 +104,10 @@ def main():
             base_wdays = 17
         base_wdays = max(10, min(45, base_wdays))
         try:
-            base_lam = float(input("Baseline EWMA decay λ (0.925–0.985 typical; Enter for 0.94): ").strip() or "0.94")
+            base_lam = float(input("Baseline EWMA decay λ (0.825–0.985 typical; Enter for 0.94): ").strip() or "0.94")
         except Exception:
             base_lam = 0.94
-        base_lam = max(0.90, min(0.995, base_lam))
+        base_lam = max(0.80, min(0.995, base_lam))
 
         recent = returns_df.iloc[-base_wdays:]
         # compute EWMA μ/Σ inline (same as optimizer’s helper)
@@ -188,10 +188,10 @@ def main():
             window_days = max(10, min(45, window_days))
 
             try:
-                lam = float(input("EWMA decay λ (0.925–0.985 typical; Enter for 0.94): ").strip() or "0.94")
+                lam = float(input("EWMA decay λ (0.825–0.985 typical; Enter for 0.94): ").strip() or "0.94")
             except Exception:
                 lam = 0.94
-            lam = max(0.90, min(0.995, lam))
+            lam = max(0.80, min(0.995, lam))
 
             print(f"\nOptimizing portfolio (Dynamic EWMA, window={window_days}d, λ={lam:.3f})...")
             opt_weights = optimize_cvar(
