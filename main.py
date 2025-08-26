@@ -145,8 +145,8 @@ def main():
         window_bt_i = min(252, max(60, len(returns_df) // 2))
         bt_i = backtest_var_cvar(
             returns_df, weights,
-            alpha=0.95, window=window_bt_i, horizon=1,
-            N=50_000, dist='normal', df=5
+            alpha=0.95, window=window_bt_i, horizon=2,
+            N=50_000, dist='t-dist', df=5
         )
         print(f"\nBacktest (alpha={bt_i['alpha']}, horizon={bt_i['horizon']}d, window={bt_i['window']}):")
         print(f" - VaR hit rate: {bt_i['hit_rate']:.3f} (expected {1-bt_i['alpha']:.3f})")
@@ -231,7 +231,7 @@ def main():
             window_bt_o = min(252, max(60, len(returns_df) // 2))
             bt_o = backtest_var_cvar(
                 returns_df, opt_weights,
-                alpha=0.95, window=window_bt_o, horizon=1, N=50_000, dist='normal', df=5
+                alpha=0.95, window=window_bt_o, horizon=2, N=50_000, dist='t-dist', df=5
             )
             print(f"\nBacktest (alpha={bt_o['alpha']}, horizon={bt_o['horizon']}d, window={bt_o['window']}):")
             print(f" - VaR hit rate: {bt_o['hit_rate']:.3f} (expected {1-bt_o['alpha']:.3f})")
