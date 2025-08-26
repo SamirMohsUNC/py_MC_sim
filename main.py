@@ -41,7 +41,7 @@ def get_user_input():
     print("3 - 4 days")
     print("4 - 7 days")
     print("5 - 10 days")
-    horizon_map = {'1': 1, '2': 2, '3': 4, '4': 7, '5': 10}
+    horizon_map = {'1': 1, '2': 2, '3': 3, '4': 6, '5': 10}
     horizon_days = horizon_map.get(input("Enter 1-5: ").strip())
     if horizon_days is None:
         raise ValueError("Invalid horizon selection.")
