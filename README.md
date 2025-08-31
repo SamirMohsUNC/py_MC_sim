@@ -102,8 +102,8 @@ CVaR 95% = 3.20% (USD 320.00)
 95% CI for CVaR: 3.15% to 3.25%
 
 
-## Why This Project Matters
-Demonstrates skills in quantitative finance, risk management, and numerical optimization.
+## What this simulator accomplishes
+Builds skills in quantitative finance, risk management, and numerical optimization.
 Bridges theory (VaR, CVaR, EWMA, statistical backtesting) with practice (real financial data, realistic caps, stress tests).
 Built to resemble a mini risk engine like those used in hedge funds or risk departments.
 
