@@ -71,9 +71,9 @@ pip install -r requirements.txt
 
 ## Requirements
 Python 3.9+
-numpy, pandas, yfinance
-matplotlib, seaborn
-scikit-learn
+numpy, pandas, yfinance,
+matplotlib, seaborn,
+scikit-learn,
 scipy
 
 
